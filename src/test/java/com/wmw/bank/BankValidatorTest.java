@@ -23,12 +23,11 @@ package com.wmw.bank;
 import static com.google.common.collect.Lists.newArrayList;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -53,7 +52,7 @@ public class BankValidatorTest {
     when(owner.getPhone()).thenReturn(null);
     when(account.getAccountNumber()).thenReturn(12345);
     when(account.getRoutingNumber()).thenReturn(67890);
-    when(account.getOwners()).thenReturn(newArrayList(owner));
+    doReturn(newArrayList(owner)).when(account).getOwners();
   }
 
   @Test
@@ -172,15 +171,13 @@ public class BankValidatorTest {
 
   @Test
   public void accountWithoutOwnerIsInvalid() {
-    when(account.getOwners()).thenReturn(new ArrayList<Owner>());
+    doReturn(newArrayList()).when(account).getOwners();
     assertFalse(BankValidator.validateAccount(account));
   }
 
   @Test
   public void accountWithAnyNullOwnerIsInvalid() {
-    List<Owner> owners = newArrayList(owner);
-    owners.add(null);
-    when(account.getOwners()).thenReturn(owners);
+    doReturn(newArrayList(owner, null)).when(account).getOwners();
     assertFalse(BankValidator.validateAccount(account));
   }
 
