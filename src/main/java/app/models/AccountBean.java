@@ -90,8 +90,8 @@ public class AccountBean implements Account {
 
   @Override
   public String toString() {
-    return Objects.toStringHelper(this).add("AccountNumber", accountNumber)
-        .add("RoutingNumber", routingNumber).add("Owners", owners).toString();
+    return Objects.toStringHelper(this).add("accountNumber", accountNumber)
+        .add("routingNumber", routingNumber).add("owners", owners).toString();
   }
 
 }
