@@ -106,9 +106,9 @@ public class OwnerBean implements Owner {
 
   @Override
   public String toString() {
-    return Objects.toStringHelper(this).add("FirstName", firstName)
-        .add("LastName", lastName).add("SSN", ssn).add("Email", email)
-        .add("Phone", phone).toString();
+    return Objects.toStringHelper(this).add("firstName", firstName)
+        .add("lastName", lastName).add("ssn", ssn).add("email", email)
+        .add("phone", phone).toString();
   }
 
 }
