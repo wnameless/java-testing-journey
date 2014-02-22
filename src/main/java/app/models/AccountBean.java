@@ -12,11 +12,12 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-import com.wmw.bank.Owner;
+import com.google.common.base.Objects;
+import com.wmw.bank.Account;
 
 @Entity
 @Table(name = "ACCOUNT")
-public class AccountBean {
+public class AccountBean implements Account {
 
   @Id
   @Column(name = "ID")
@@ -34,6 +35,63 @@ public class AccountBean {
       name = "ACCOUNT_ID", referencedColumnName = "ID") },
       inverseJoinColumns = { @JoinColumn(name = "OWNER_ID",
           referencedColumnName = "ID") })
-  private List<Owner> owners;
+  private List<OwnerBean> owners;
+
+  public Integer getId() {
+    return id;
+  }
+
+  public void setId(Integer id) {
+    this.id = id;
+  }
+
+  @Override
+  public int getAccountNumber() {
+    return accountNumber;
+  }
+
+  public void setAccountNumber(int accountNumber) {
+    this.accountNumber = accountNumber;
+  }
+
+  @Override
+  public int getRoutingNumber() {
+    return routingNumber;
+  }
+
+  public void setRoutingNumber(int routingNumber) {
+    this.routingNumber = routingNumber;
+  }
+
+  @Override
+  public List<OwnerBean> getOwners() {
+    return owners;
+  }
+
+  public void setOwners(List<OwnerBean> owners) {
+    this.owners = owners;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (o instanceof Account) {
+      Account account = (Account) o;
+      return Objects.equal(accountNumber, account.getAccountNumber())
+          && Objects.equal(routingNumber, account.getRoutingNumber())
+          && Objects.equal(owners, account.getOwners());
+    }
+    return false;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(accountNumber, routingNumber, owners);
+  }
+
+  @Override
+  public String toString() {
+    return Objects.toStringHelper(this).add("AccountNumber", accountNumber)
+        .add("RoutingNumber", routingNumber).add("Owners", owners).toString();
+  }
 
 }

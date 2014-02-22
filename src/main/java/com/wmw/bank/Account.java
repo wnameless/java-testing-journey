@@ -28,6 +28,6 @@ public interface Account {
 
   public int getRoutingNumber();
 
-  public List<Owner> getOwners();
+  public List<? extends Owner> getOwners();
 
 }
