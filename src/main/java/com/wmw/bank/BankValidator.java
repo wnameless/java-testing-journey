@@ -72,7 +72,7 @@ public final class BankValidator {
     if (account.getRoutingNumber() <= 0)
       return false;
 
-    if (account.getOwners().size() < 1 || account.getOwners().contains(null))
+    if (account.getOwners().isEmpty() || account.getOwners().contains(null))
       return false;
 
     return true;
