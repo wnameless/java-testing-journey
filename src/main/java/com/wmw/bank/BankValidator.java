@@ -42,7 +42,7 @@ public final class BankValidator {
         || isBlank(owner.getSsn()))
       return false;
 
-    if (Pattern.compile("^\\d{3}[- ]?\\d{2,3}[- ]?\\d{4}$")
+    if (!Pattern.compile("^\\d{3}[- ]?\\d{2,3}[- ]?\\d{4}$")
         .matcher(owner.getSsn()).find())
       return false;
 
