@@ -46,6 +46,12 @@
 			<version>15.0</version>
 		</dependency>
 		<dependency>
+			<groupId>nl.jqno.equalsverifier</groupId>
+			<artifactId>equalsverifier</artifactId>
+			<version>1.4</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>com.google.code.bean-matchers</groupId>
 			<artifactId>bean-matchers</artifactId>
 			<version>0.8.1</version>

@@ -87,7 +87,7 @@ public class OwnerBean implements Owner {
   }
 
   @Override
-  public boolean equals(Object o) {
+  public final boolean equals(Object o) {
     if (o instanceof Owner) {
       Owner owner = (Owner) o;
       return Objects.equal(firstName, owner.getFirstName())
@@ -100,7 +100,7 @@ public class OwnerBean implements Owner {
   }
 
   @Override
-  public int hashCode() {
+  public final int hashCode() {
     return Objects.hashCode(firstName, lastName, ssn, email, phone);
   }
 

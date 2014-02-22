@@ -73,7 +73,7 @@ public class AccountBean implements Account {
   }
 
   @Override
-  public boolean equals(Object o) {
+  public final boolean equals(Object o) {
     if (o instanceof Account) {
       Account account = (Account) o;
       return Objects.equal(accountNumber, account.getAccountNumber())
@@ -84,7 +84,7 @@ public class AccountBean implements Account {
   }
 
   @Override
-  public int hashCode() {
+  public final int hashCode() {
     return Objects.hashCode(accountNumber, routingNumber, owners);
   }
 
