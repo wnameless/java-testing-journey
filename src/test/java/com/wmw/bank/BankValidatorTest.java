@@ -22,6 +22,7 @@ package com.wmw.bank;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
@@ -64,121 +65,158 @@ public class BankValidatorTest {
   }
 
   @Test
-  public void testValidateOwner() {
-    assertTrue(BankValidator.validateOwner(owner));
+  public void testValidateWithOwner() {
+    assertSame(owner, BankValidator.validate(owner));
   }
 
   @Test(expected = NullPointerException.class)
-  public void validateOwnerWithNullObjectShouldRaiseException() {
-    BankValidator.validateOwner(null);
+  public void validaterWithNullOwneShouldRaiseException() {
+    BankValidator.validate((Owner) null);
   }
 
-  @Test
-  public void ownerWithBlankFirstNameIsInvalid() {
+  @Test(expected = IllegalStateException.class)
+  public void ownerWithNullFirstNameIsInvalid() {
     when(owner.getFirstName()).thenReturn(null);
-    assertFalse(BankValidator.validateOwner(owner));
+    BankValidator.validate(owner);
+  }
+
+  @Test(expected = IllegalStateException.class)
+  public void ownerWithBlankFirstNameIsInvalid() {
     when(owner.getFirstName()).thenReturn("   ");
-    assertFalse(BankValidator.validateOwner(owner));
+    BankValidator.validate(owner);
   }
 
-  @Test
-  public void ownerWithBlankLastNameIsInvalid() {
+  @Test(expected = IllegalStateException.class)
+  public void ownerWithNullLastNameIsInvalid() {
     when(owner.getLastName()).thenReturn(null);
-    assertFalse(BankValidator.validateOwner(owner));
+    BankValidator.validate(owner);
+  }
+
+  @Test(expected = IllegalStateException.class)
+  public void ownerWithBlankLastNameIsInvalid() {
     when(owner.getLastName()).thenReturn("   ");
-    assertFalse(BankValidator.validateOwner(owner));
+    BankValidator.validate(owner);
   }
 
-  @Test
-  public void ownerWithBlankSsnIsInvalid() {
+  @Test(expected = IllegalStateException.class)
+  public void ownerWithNullSsnIsInvalid() {
     when(owner.getSsn()).thenReturn(null);
-    assertFalse(BankValidator.validateOwner(owner));
-    when(owner.getSsn()).thenReturn("   ");
-    assertFalse(BankValidator.validateOwner(owner));
+    BankValidator.validate(owner);
+
   }
 
-  @Test
+  @Test(expected = IllegalStateException.class)
+  public void ownerWithBlankSsnIsInvalid() {
+    when(owner.getSsn()).thenReturn("   ");
+    BankValidator.validate(owner);
+  }
+
+  @Test(expected = IllegalStateException.class)
   public void ownerWithWrongSsnIsInvalid() {
     when(owner.getSsn()).thenReturn("123456");
-    assertFalse(BankValidator.validateOwner(owner));
+    BankValidator.validate(owner);
   }
 
   @Test
   public void ownerWithNullOrEmptyEmailIsValid() {
     when(owner.getEmail()).thenReturn(null);
-    assertTrue(BankValidator.validateOwner(owner));
+    assertSame(owner, BankValidator.validate(owner));
     when(owner.getEmail()).thenReturn("");
-    assertTrue(BankValidator.validateOwner(owner));
+    assertSame(owner, BankValidator.validate(owner));
   }
 
   @Test
   public void ownerWithValidEmailIsValid() {
     when(owner.getEmail()).thenReturn("abc@def.com");
-    assertTrue(BankValidator.validateOwner(owner));
+    assertSame(owner, BankValidator.validate(owner));
   }
 
-  @Test
+  @Test(expected = IllegalStateException.class)
   public void ownerWithInvalidEmailIsInvalid() {
     when(owner.getEmail()).thenReturn("abc@d$ef.xx");
-    assertFalse(BankValidator.validateOwner(owner));
+    assertSame(owner, BankValidator.validate(owner));
   }
 
   @Test
   public void ownerWithNullOrEmptyPhoneIsValid() {
     when(owner.getPhone()).thenReturn(null);
-    assertTrue(BankValidator.validateOwner(owner));
+    assertSame(owner, BankValidator.validate(owner));
     when(owner.getPhone()).thenReturn("");
-    assertTrue(BankValidator.validateOwner(owner));
+    assertSame(owner, BankValidator.validate(owner));
   }
 
   @Test
   public void ownerWithValidPhoneIsValid() {
     when(owner.getPhone()).thenReturn("7182223333");
-    assertTrue(BankValidator.validateOwner(owner));
+    assertSame(owner, BankValidator.validate(owner));
   }
 
-  @Test
+  @Test(expected = IllegalStateException.class)
   public void ownerWithInvalidPhoneIsInvalid() {
     when(owner.getPhone()).thenReturn("$$$$$$");
-    assertFalse(BankValidator.validateOwner(owner));
+    BankValidator.validate(owner);
   }
 
   @Test
   public void testValidateAccount() {
-    assertTrue(BankValidator.validateAccount(account));
+    assertSame(account, BankValidator.validate(account));
   }
 
   @Test(expected = NullPointerException.class)
-  public void validateAccountWithNullObjectShouldRaiseException() {
-    BankValidator.validateAccount(null);
+  public void validateWithNullAccountShouldRaiseException() {
+    BankValidator.validate((Account) null);
   }
 
-  @Test
+  @Test(expected = IllegalStateException.class)
   public void accountWithNonPositiveAccountNumberIsInvalid() {
-    when(account.getAccountNumber()).thenReturn(0);
-    assertFalse(BankValidator.validateAccount(account));
     when(account.getAccountNumber()).thenReturn(-1);
-    assertFalse(BankValidator.validateAccount(account));
+    BankValidator.validate(account);
   }
 
-  @Test
+  @Test(expected = IllegalStateException.class)
   public void accountWithNonPositiveRoutingNumberIsInvalid() {
-    when(account.getRoutingNumber()).thenReturn(0);
-    assertFalse(BankValidator.validateAccount(account));
     when(account.getRoutingNumber()).thenReturn(-1);
-    assertFalse(BankValidator.validateAccount(account));
+    BankValidator.validate(account);
   }
 
-  @Test
+  @Test(expected = IllegalStateException.class)
   public void accountWithoutOwnerIsInvalid() {
     doReturn(newArrayList()).when(account).getOwners();
-    assertFalse(BankValidator.validateAccount(account));
+    BankValidator.validate(account);
+  }
+
+  @Test(expected = NullPointerException.class)
+  public void accountWithNullOwnersIsInvalid() {
+    doReturn(null).when(account).getOwners();
+    BankValidator.validate(account);
+  }
+
+  @Test(expected = IllegalStateException.class)
+  public void accountWithAnyNullOwnerIsInvalid() {
+    doReturn(newArrayList(owner, null)).when(account).getOwners();
+    BankValidator.validate(account);
   }
 
   @Test
-  public void accountWithAnyNullOwnerIsInvalid() {
-    doReturn(newArrayList(owner, null)).when(account).getOwners();
-    assertFalse(BankValidator.validateAccount(account));
+  public void testTryValidateWithValidOwner() {
+    assertTrue(BankValidator.tryValidate(owner));
+  }
+
+  @Test
+  public void testTryValidateWithInvalidOwner() {
+    when(owner.getFirstName()).thenReturn(null);
+    assertFalse(BankValidator.tryValidate(owner));
+  }
+
+  @Test
+  public void testTryValidateWithValidAccount() {
+    assertTrue(BankValidator.tryValidate(account));
+  }
+
+  @Test
+  public void testTryValidateWithInvalidAccount() {
+    when(account.getAccountNumber()).thenReturn(-1);
+    assertFalse(BankValidator.tryValidate(account));
   }
 
 }
