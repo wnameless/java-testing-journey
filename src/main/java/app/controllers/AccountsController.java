@@ -46,7 +46,7 @@ public class AccountsController {
   public String index(ModelMap model) {
     model.addAttribute("owners", ownerService.getAllOwners());
     model.addAttribute("accounts", accountService.getAllAccounts());
-    return "accounts";
+    return "accounts/index";
   }
 
   @RequestMapping(method = RequestMethod.POST)
@@ -59,7 +59,7 @@ public class AccountsController {
     accountService.addAccount(accountNumber, routingNumber, ownerIds);
     model.addAttribute("owners", ownerService.getAllOwners());
     model.addAttribute("accounts", accountService.getAllAccounts());
-    return "accounts";
+    return "accounts/index";
   }
 
 }

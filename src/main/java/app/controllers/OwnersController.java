@@ -42,7 +42,7 @@ public class OwnersController {
   @RequestMapping(method = GET)
   public String index(ModelMap model) {
     model.addAttribute("owners", ownerService.getAllOwners());
-    return "owners";
+    return "owners/index";
   }
 
   @RequestMapping(method = POST)
@@ -55,7 +55,7 @@ public class OwnersController {
 
     ownerService.addOwner(firstName, lastName, ssn, email, phone);
     model.addAttribute("owners", ownerService.getAllOwners());
-    return "owners";
+    return "owners/index";
   }
 
 }
