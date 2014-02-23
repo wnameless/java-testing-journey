@@ -49,8 +49,7 @@ public class AccountServiceImpl implements AccountService {
     account.setAccountNumber(accountNumber);
     account.setRoutingNumber(routingNumber);
     account.setOwners(newArrayList(owners));
-    if (!BankValidator.validateAccount(account))
-      throw new IllegalStateException("Account contains invalid value.");
+    BankValidator.validate(account);
     return accountDAO.save(account);
   }
 
