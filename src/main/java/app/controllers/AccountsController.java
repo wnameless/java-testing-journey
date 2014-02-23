@@ -1,11 +1,7 @@
 package app.controllers;
 
-import static net.sf.rubycollect4j.RubyCollections.newRubyArray;
-
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
-
-import net.sf.rubycollect4j.block.TransformBlock;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -37,19 +33,9 @@ public class AccountsController {
   public String create(ModelMap model,//
       @RequestParam int accountNumber,//
       @RequestParam int routingNumber,//
-      @RequestParam int ownerId,//
+      @RequestParam(value = "ownerId") Integer[] ownerIds,//
       HttpServletRequest request) {
 
-    String[] rawOwnerIds = request.getParameterValues("ownerId");
-    Integer[] ownerIds =
-        newRubyArray(rawOwnerIds).map(new TransformBlock<String, Integer>() {
-
-          @Override
-          public Integer yield(String item) {
-            return Integer.valueOf(item);
-          }
-
-        }).toArray(new Integer[rawOwnerIds.length]);
     accountService.addAccount(accountNumber, routingNumber, ownerIds);
     model.addAttribute("owners", ownerService.getAllOwners());
     model.addAttribute("accounts", accountService.getAllAccounts());

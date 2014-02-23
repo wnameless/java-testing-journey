@@ -1,10 +1,4 @@
-<%@page import="java.util.List"%>
-<%@page import="app.models.OwnerBean"%>
-<%@page import="app.models.AccountBean"%>
-<%@page
-	import="static net.sf.rubycollect4j.RubyCollections.newRubyArray"%>
-<%@page import="net.sf.rubycollect4j.block.TransformBlock"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -16,16 +10,12 @@
 <body>
 	<form method="POST">
 		<h1>Owners</h1>
-
+		<h6>Allow Multiple Selection</h6>
 		<select multiple name="ownerId">
-			<%
-			  for (OwnerBean owner : (List<OwnerBean>) request.getAttribute("owners")) {
-			%>
-			<option value="<%=owner.getId()%>"><%=owner.getFirstName()%>
-				<%=owner.getLastName()%></option>
-			<%
-			  }
-			%>
+			<c:forEach var="owner" items="${owners}">
+				<option value="${owner.id}"><c:out
+						value="${owner.firstName} ${owner.lastName}" /></option>
+			</c:forEach>
 		</select>
 
 		<hr>
@@ -34,46 +24,36 @@
 		<table>
 			<thead>
 				<tr>
-					<th>Name</th>
-					<th>SSN</th>
+					<th>AccountNumber</th>
+					<th>RoutingNumber</th>
 					<th>Owners</th>
 				</tr>
 			</thead>
 			<tbody>
-				<%
-				  for (AccountBean account : (List<AccountBean>) request
-				      .getAttribute("accounts")) {
-				%>
-				<tr>
-					<td><%=account.getAccountNumber()%></td>
-					<td><%=account.getRoutingNumber()%></td>
-					<%
-					  String name =
-					        newRubyArray(account.getOwners()).map(
-					            new TransformBlock<OwnerBean, String>() {
-
-					              @Override
-					              public String yield(OwnerBean owner) {
-					                return owner.getFirstName() + " " + owner.getLastName();
-					              }
-
-					            }).join(", ");
-					%>
-					<td><%=name%></td>
-				</tr>
-				<%
-				  }
-				%>
+				<c:forEach var="account" items="${accounts}">
+					<tr>
+						<td><c:out value="${account.accountNumber}" /></td>
+						<td><c:out value="${account.routingNumber}" /></td>
+						<td><c:forEach var="owner" items="${account.owners}">
+								<p>
+									<c:out value="${owner.firstName}" />
+									<c:out value="${owner.lastName}" />
+								</p>
+							</c:forEach></td>
+					</tr>
+				</c:forEach>
 			</tbody>
 		</table>
 
 		<hr>
 
 		<div>
-			Account Number: <input name="accountNumber" /><br>
-			<!--  -->
-			Routing Number: <input name="routingNumber" /><br>
-			<!--  -->
+			<p>
+				Account Number: <input name="accountNumber" />
+			</p>
+			<p>
+				Routing Number: <input name="routingNumber" /><br>
+			</p>
 			<input type="submit" value="Create Account" />
 		</div>
 	</form>

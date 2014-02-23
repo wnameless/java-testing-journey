@@ -1,6 +1,4 @@
-<%@page import="java.util.List"%>
-<%@page import="app.models.OwnerBean"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -21,34 +19,35 @@
 			</tr>
 		</thead>
 		<tbody>
-			<%
-			  for (OwnerBean owner : (List<OwnerBean>) request.getAttribute("owners")) {
-			%>
-			<tr>
-				<td><%=owner.getFirstName()%> <%=owner.getLastName()%></td>
-				<td><%=owner.getSsn()%></td>
-				<td><%=owner.getEmail()%></td>
-				<td><%=owner.getPhone()%></td>
-			</tr>
-			<%
-			  }
-			%>
+			<c:forEach var="owner" items="${owners}">
+				<tr>
+					<td><c:out value="${owner.firstName} ${owner.lastName}" /></td>
+					<td><c:out value="${owner.ssn}" /></td>
+					<td><c:out value="${owner.email}" /></td>
+					<td><c:out value="${owner.phone}" /></td>
+				</tr>
+			</c:forEach>
 		</tbody>
 	</table>
 
 	<hr>
 
 	<form method="POST">
-		First Name: <input name="firstName" /><br>
-		<!--  -->
-		Last Name: <input name="lastName" /><br>
-		<!--  -->
-		SSN: <input name="ssn" /><br>
-		<!--  -->
-		Email: <input name="email" /><br>
-		<!--  -->
-		Phone: <input name="phone" /><br>
-		<!--  -->
+		<p>
+			First Name: <input name="firstName" /><br>
+		</p>
+		<p>
+			Last Name: <input name="lastName" /><br>
+		</p>
+		<p>
+			SSN: <input name="ssn" /><br>
+		</p>
+		<p>
+			Email: <input name="email" /><br>
+		</p>
+		<p>
+			Phone: <input name="phone" /><br>
+		</p>
 		<input type="submit" value="Create Owner" />
 	</form>
 
