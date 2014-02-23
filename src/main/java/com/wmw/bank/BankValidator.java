@@ -40,7 +40,7 @@ public final class BankValidator {
 
   private BankValidator() {}
 
-  public static Owner validate(Owner owner) {
+  public static <T extends Owner> T validate(T owner) {
     checkNotNull(owner, "Owner can't be null.");
     checkState(!isBlank(owner.getFirstName()), "First name can't be blank.");
     checkState(!isBlank(owner.getLastName()), "Last name can't be blank.");
@@ -63,7 +63,7 @@ public final class BankValidator {
     return owner;
   }
 
-  public static Account validate(Account account) {
+  public static <T extends Account> T validate(T account) {
     checkNotNull(account, "Account can't be null.");
     checkState(account.getAccountNumber() > 0,
         "Account number must be grater than 0.");
