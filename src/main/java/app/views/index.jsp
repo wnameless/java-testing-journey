@@ -7,6 +7,9 @@
 <title>Java Testing Journey</title>
 </head>
 <body>
-	<h1>Hello!</h1>
+	<h1>Bank</h1>
+	<hr>
+	<a href="owners">Manage Owners</a>
+	<a href="accounts">Manage Accounts</a>
 </body>
 </html>
