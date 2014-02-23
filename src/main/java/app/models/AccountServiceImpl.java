@@ -49,8 +49,7 @@ public class AccountServiceImpl implements AccountService {
     account.setAccountNumber(accountNumber);
     account.setRoutingNumber(routingNumber);
     account.setOwners(newArrayList(owners));
-    BankValidator.validate(account);
-    return accountDAO.save(account);
+    return accountDAO.save(BankValidator.validate(account));
   }
 
   @Transactional

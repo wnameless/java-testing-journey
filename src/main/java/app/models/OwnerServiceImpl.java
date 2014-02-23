@@ -45,8 +45,7 @@ public class OwnerServiceImpl implements OwnerService {
     owner.setSsn(ssn);
     owner.setEmail(email);
     owner.setPhone(phone);
-    BankValidator.validate(owner);
-    return ownerDAO.save(owner);
+    return ownerDAO.save(BankValidator.validate(owner));
   }
 
   @Transactional
