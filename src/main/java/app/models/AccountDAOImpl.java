@@ -20,7 +20,21 @@
  */
 package app.models;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
+import org.hibernate.SessionFactory;
+
 import com.googlecode.genericdao.dao.hibernate.GenericDAOImpl;
 
+@Named
 public class AccountDAOImpl extends GenericDAOImpl<AccountBean, Integer>
-    implements AccountDAO {}
+    implements AccountDAO {
+
+  @Inject
+  @Override
+  public void setSessionFactory(SessionFactory sessionFactory) {
+    super.setSessionFactory(sessionFactory);
+  }
+
+}
