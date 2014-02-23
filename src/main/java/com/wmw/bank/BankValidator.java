@@ -21,9 +21,11 @@
 package com.wmw.bank;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static org.apache.commons.lang.StringUtils.isBlank;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
 import org.apache.commons.validator.routines.EmailValidator;
@@ -33,48 +35,62 @@ import com.google.i18n.phonenumbers.PhoneNumberUtil;
 
 public final class BankValidator {
 
+  private static EmailValidator emailValidator = EmailValidator.getInstance();
+  private static PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
+
   private BankValidator() {}
 
-  public static boolean validateOwner(Owner owner) {
+  public static Owner validate(Owner owner) {
     checkNotNull(owner, "Owner can't be null.");
+    checkState(!isBlank(owner.getFirstName()), "First name can't be blank.");
+    checkState(!isBlank(owner.getLastName()), "Last name can't be blank.");
+    checkState(!isBlank(owner.getSsn()), "SSN can't be blank.");
+    Pattern ssnRegEx = Pattern.compile("^\\d{3}[- ]?\\d{2,3}[- ]?\\d{4}$");
+    checkState(ssnRegEx.matcher(owner.getSsn()).find(), "Invalid SSN.");
 
-    if (isBlank(owner.getFirstName()) || isBlank(owner.getLastName())
-        || isBlank(owner.getSsn()))
-      return false;
-
-    if (!Pattern.compile("^\\d{3}[- ]?\\d{2,3}[- ]?\\d{4}$")
-        .matcher(owner.getSsn()).find())
-      return false;
-
-    if (!isNullOrEmpty(owner.getEmail())
-        && !EmailValidator.getInstance().isValid(owner.getEmail()))
-      return false;
+    if (!isNullOrEmpty(owner.getEmail()))
+      checkState(emailValidator.isValid(owner.getEmail()), "Invalid email.");
 
     if (!isNullOrEmpty(owner.getPhone())) {
       boolean isValid = false;
       try {
-        PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
         isValid =
             phoneUtil.isValidNumber(phoneUtil.parse(owner.getPhone(), "US"));
       } catch (NumberParseException e) {}
-      return isValid;
+      checkState(isValid, "Invalid phone.");
     }
 
+    return owner;
+  }
+
+  public static Account validate(Account account) {
+    checkNotNull(account, "Account can't be null.");
+    checkState(account.getAccountNumber() > 0,
+        "Account number must be grater than 0.");
+    checkState(account.getRoutingNumber() > 0,
+        "Routing number must be grater than 0.");
+    List<? extends Owner> owners = account.getOwners();
+    checkNotNull(owners, "Owners can't be null.");
+    checkState(!owners.isEmpty() && !owners.contains(null),
+        "At least 1 owner required and every owner can't be null.");
+    return account;
+  }
+
+  public static boolean tryValidate(Owner owner) {
+    try {
+      validate(owner);
+    } catch (Exception e) {
+      return false;
+    }
     return true;
   }
 
-  public static boolean validateAccount(Account account) {
-    checkNotNull(account, "Account can't be null.");
-
-    if (account.getAccountNumber() <= 0)
+  public static boolean tryValidate(Account account) {
+    try {
+      validate(account);
+    } catch (Exception e) {
       return false;
-
-    if (account.getRoutingNumber() <= 0)
-      return false;
-
-    if (account.getOwners().isEmpty() || account.getOwners().contains(null))
-      return false;
-
+    }
     return true;
   }
 
