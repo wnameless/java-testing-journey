@@ -90,9 +90,9 @@ public class AccountServiceImplTest {
 
   @Test
   public void testDeleteAccount() {
-    AccountBean account = service.getAllAccounts().get(0);
+    AccountBean account = accountDao.findAll().get(0);
     service.deleteAccount(account.getId());
-    assertEquals(0, service.getAllAccounts().size());
+    assertEquals(0, accountDao.findAll().size());
   }
 
 }

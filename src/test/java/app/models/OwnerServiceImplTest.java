@@ -75,9 +75,9 @@ public class OwnerServiceImplTest {
 
   @Test
   public void testDeleteOwner() {
-    OwnerBean bean = service.getAllOwners().get(0);
+    OwnerBean bean = dao.findAll().get(0);
     service.deleteOwner(bean.getId());
-    assertEquals(0, service.getAllOwners().size());
+    assertEquals(0, dao.findAll().size());
   }
 
 }
