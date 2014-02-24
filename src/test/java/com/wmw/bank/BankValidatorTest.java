@@ -57,7 +57,7 @@ public class BankValidatorTest {
   }
 
   @Test
-  public void checkIfPrivateConstructorExisted() throws Exception {
+  public void constructorShouldBePrivate() throws Exception {
     Constructor<BankValidator> c = BankValidator.class.getDeclaredConstructor();
     assertTrue(Modifier.isPrivate(c.getModifiers()));
     c.setAccessible(true);
@@ -70,7 +70,7 @@ public class BankValidatorTest {
   }
 
   @Test(expected = NullPointerException.class)
-  public void validaterWithNullOwneShouldRaiseException() {
+  public void validateWithNullOwnerShouldRaiseException() {
     BankValidator.validate((Owner) null);
   }
 
