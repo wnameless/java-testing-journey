@@ -47,7 +47,7 @@ public class AccountBean implements Account {
   @Column(name = "ACCOUNT_NUMBER", unique = true)
   private int accountNumber;
 
-  @Column(name = "ROUNTING_NUMBER")
+  @Column(name = "ROUTING_NUMBER")
   private int routingNumber;
 
   @ManyToMany(fetch = FetchType.EAGER)
