@@ -43,8 +43,9 @@ public class AccountServiceImpl implements AccountService {
   @Transactional
   @Override
   public boolean addAccount(int accountNumber, int routingNumber,
-      Integer... ownerIds) {
-    OwnerBean[] owners = ownerDAO.find(ownerIds);
+      List<Integer> ownerIds) {
+    OwnerBean[] owners =
+        ownerDAO.find(ownerIds.toArray(new Integer[ownerIds.size()]));
     AccountBean account = new AccountBean();
     account.setAccountNumber(accountNumber);
     account.setRoutingNumber(routingNumber);

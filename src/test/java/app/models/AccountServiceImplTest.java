@@ -73,7 +73,7 @@ public class AccountServiceImplTest {
     account.setAccountNumber(67890);
     account.setRoutingNumber(12345);
     account.setOwners(newArrayList(owner));
-    service.addAccount(67890, 12345, new Integer[] { owner.getId() });
+    service.addAccount(67890, 12345, newArrayList(owner.getId()));
     assertEquals(2, accountDao.findAll().size());
     assertTrue(accountDao.findAll().contains(account));
   }

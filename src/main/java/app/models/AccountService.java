@@ -25,7 +25,7 @@ import java.util.List;
 public interface AccountService {
 
   public boolean addAccount(int accountNumber, int routingNumber,
-      Integer... ownerIds);
+      List<Integer> ownerIds);
 
   public List<AccountBean> getAllAccounts();
 
