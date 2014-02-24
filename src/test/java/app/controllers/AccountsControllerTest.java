@@ -22,6 +22,7 @@ package app.controllers;
 
 import static java.util.Collections.emptyList;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -78,7 +79,7 @@ public class AccountsControllerTest {
   public void postCreate() throws Exception {
     when(
         accountService.addAccount(any(int.class), any(int.class),
-            any(Integer[].class))).thenReturn(true);
+            anyListOf(Integer.class))).thenReturn(true);
     when(ownerService.getAllOwners()).thenReturn(new ArrayList<OwnerBean>());
     when(accountService.getAllAccounts()).thenReturn(
         new ArrayList<AccountBean>());
@@ -90,5 +91,4 @@ public class AccountsControllerTest {
         .andExpect(model().attribute("owners", emptyList()))
         .andExpect(model().attribute("accounts", emptyList()));
   }
-
 }
