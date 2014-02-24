@@ -20,7 +20,6 @@
  */
 package app.controllers;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -44,7 +43,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import app.models.OwnerBean;
 import app.models.OwnerDAO;
 
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
@@ -62,8 +60,6 @@ public class OwnersControllerIntegrationTest {
 
   MockMvc mockMvc;
 
-  OwnerBean owner;
-
   @Inject
   OwnersController controller;
 
@@ -73,12 +69,6 @@ public class OwnersControllerIntegrationTest {
   @Before
   public void setUp() throws Exception {
     mockMvc = standaloneSetup(controller).build();
-    owner = new OwnerBean();
-    owner.setFirstName("John");
-    owner.setLastName("Doe");
-    owner.setSsn("123-456-7890");
-    owner.setEmail("");
-    owner.setPhone("");
   }
 
   @DatabaseSetup("classpath:datasets/owner.xml")
@@ -93,12 +83,11 @@ public class OwnersControllerIntegrationTest {
   public void postCreate() throws Exception {
     mockMvc
         .perform(
-            post("/owners").param("firstName", owner.getFirstName())
-                .param("lastName", owner.getLastName())
-                .param("ssn", owner.getSsn()).param("email", owner.getEmail())
-                .param("phone", owner.getPhone())).andExpect(status().isOk())
+            post("/owners").param("firstName", "John").param("lastName", "Doe")
+                .param("ssn", "123-456-7890").param("email", "")
+                .param("phone", "")).andExpect(status().isOk())
         .andExpect(view().name("owners/index"))
-        .andExpect(model().attribute("owners", newArrayList(owner)));
+        .andExpect(model().attribute("owners", dao.findAll()));
   }
 
 }
