@@ -20,7 +20,6 @@
  */
 package app.controllers;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -44,7 +43,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import app.models.OwnerBean;
+import app.models.AccountDAO;
 import app.models.OwnerDAO;
 
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
@@ -58,47 +57,46 @@ import com.github.springtestdbunit.annotation.DatabaseSetup;
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
     DirtiesContextTestExecutionListener.class,
     TransactionalTestExecutionListener.class, DbUnitTestExecutionListener.class })
-public class OwnersControllerIntegrationTest {
+public class AccountsControllerIntegrationTest {
 
   MockMvc mockMvc;
 
-  OwnerBean owner;
+  @Inject
+  AccountsController controller;
 
   @Inject
-  OwnersController controller;
+  AccountDAO accountDAO;
 
   @Inject
-  OwnerDAO dao;
+  OwnerDAO ownerDAO;
 
   @Before
   public void setUp() throws Exception {
     mockMvc = standaloneSetup(controller).build();
-    owner = new OwnerBean();
-    owner.setFirstName("John");
-    owner.setLastName("Doe");
-    owner.setSsn("123-456-7890");
-    owner.setEmail("");
-    owner.setPhone("");
+  }
+
+  @DatabaseSetup({ "classpath:datasets/owner.xml",
+      "classpath:datasets/account.xml", "classpath:datasets/account_owner.xml" })
+  @Test
+  public
+      void getIndex() throws Exception {
+    mockMvc.perform(get("/accounts")).andExpect(status().isOk())
+        .andExpect(view().name("accounts/index"))
+        .andExpect(model().attribute("owners", ownerDAO.findAll()))
+        .andExpect(model().attribute("accounts", accountDAO.findAll()));
   }
 
   @DatabaseSetup("classpath:datasets/owner.xml")
   @Test
-  public void getIndex() throws Exception {
-    mockMvc.perform(get("/owners")).andExpect(status().isOk())
-        .andExpect(view().name("owners/index"))
-        .andExpect(model().attribute("owners", dao.findAll()));
-  }
-
-  @Test
   public void postCreate() throws Exception {
     mockMvc
         .perform(
-            post("/owners").param("firstName", owner.getFirstName())
-                .param("lastName", owner.getLastName())
-                .param("ssn", owner.getSsn()).param("email", owner.getEmail())
-                .param("phone", owner.getPhone())).andExpect(status().isOk())
-        .andExpect(view().name("owners/index"))
-        .andExpect(model().attribute("owners", newArrayList(owner)));
+            post("/accounts").param("accountNumber", "1234")
+                .param("routingNumber", "5678").param("ownerId", "1")
+                .param("ownerId", "2")).andExpect(status().isOk())
+        .andExpect(view().name("accounts/index"))
+        .andExpect(model().attribute("owners", ownerDAO.findAll()))
+        .andExpect(model().attribute("accounts", accountDAO.findAll()));
   }
 
 }
