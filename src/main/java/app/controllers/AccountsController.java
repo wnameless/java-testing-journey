@@ -20,6 +20,8 @@
  */
 package app.controllers;
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
@@ -53,7 +55,7 @@ public class AccountsController {
   public String create(ModelMap model,//
       @RequestParam int accountNumber,//
       @RequestParam int routingNumber,//
-      @RequestParam(value = "ownerId") Integer[] ownerIds,//
+      @RequestParam(value = "ownerId") List<Integer> ownerIds,//
       HttpServletRequest request) {
 
     accountService.addAccount(accountNumber, routingNumber, ownerIds);
