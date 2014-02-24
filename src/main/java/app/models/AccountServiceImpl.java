@@ -20,7 +20,7 @@
  */
 package app.models;
 
-import static com.google.common.collect.Lists.newArrayList;
+import static net.sf.rubycollect4j.RubyCollections.newRubyArray;
 
 import java.util.List;
 
@@ -49,7 +49,7 @@ public class AccountServiceImpl implements AccountService {
     AccountBean account = new AccountBean();
     account.setAccountNumber(accountNumber);
     account.setRoutingNumber(routingNumber);
-    account.setOwners(newArrayList(owners));
+    account.setOwners(newRubyArray(owners).compact().uniq());
     return accountDAO.save(BankValidator.validate(account));
   }
 
