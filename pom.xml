@@ -31,6 +31,11 @@
 			<version>1.2</version>
 		</dependency>
 		<dependency>
+			<groupId>net.sf.rubycollect4j</groupId>
+			<artifactId>rubycollect4j</artifactId>
+			<version>1.6.3</version>
+		</dependency>
+		<dependency>
 			<groupId>commons-dbcp</groupId>
 			<artifactId>commons-dbcp</artifactId>
 			<version>1.4</version>
