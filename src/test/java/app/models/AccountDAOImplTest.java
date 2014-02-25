@@ -22,6 +22,7 @@ package app.models;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import javax.inject.Inject;
 
@@ -61,7 +62,7 @@ public class AccountDAOImplTest extends
 
   @Test
   public void testSave() {
-    dao.save(account);
+    assertTrue(dao.save(account));
   }
 
   @Test
