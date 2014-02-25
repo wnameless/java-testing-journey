@@ -22,6 +22,7 @@ package app.models;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import javax.inject.Inject;
 
@@ -30,7 +31,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,8 +39,7 @@ import org.springframework.transaction.annotation.Transactional;
 @ContextConfiguration(locations = { "/context.xml" })
 @TransactionConfiguration(defaultRollback = true)
 @Transactional
-public class AccountDAOImplTest extends
-    AbstractTransactionalJUnit4SpringContextTests {
+public class AccountDAOImplTest {
 
   @Inject
   AccountDAO dao;
@@ -61,7 +60,7 @@ public class AccountDAOImplTest extends
 
   @Test
   public void testSave() {
-    dao.save(account);
+    assertTrue(dao.save(account));
   }
 
   @Test
@@ -78,7 +77,7 @@ public class AccountDAOImplTest extends
   }
 
   @Test(expected = ConstraintViolationException.class)
-  public void raiseExceptionWhenDuplicateAccountNumberIsSaved() {
+  public void duplicateAccountNumberCanNotBeSaved() {
     dao.save(account);
     account = new AccountBean();
     account.setAccountNumber(12345);
