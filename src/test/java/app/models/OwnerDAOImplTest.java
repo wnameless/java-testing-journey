@@ -21,6 +21,7 @@
 package app.models;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -57,7 +58,7 @@ public class OwnerDAOImplTest {
 
   @Test
   public void testSave() {
-    dao.save(bean);
+    assertTrue(dao.save(bean));
   }
 
   @Test
