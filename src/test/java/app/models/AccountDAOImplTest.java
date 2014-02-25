@@ -31,7 +31,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,8 +39,7 @@ import org.springframework.transaction.annotation.Transactional;
 @ContextConfiguration(locations = { "/context.xml" })
 @TransactionConfiguration(defaultRollback = true)
 @Transactional
-public class AccountDAOImplTest extends
-    AbstractTransactionalJUnit4SpringContextTests {
+public class AccountDAOImplTest {
 
   @Inject
   AccountDAO dao;
