@@ -21,10 +21,12 @@
 package app.models;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
+import org.hibernate.exception.ConstraintViolationException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,7 +45,7 @@ public class OwnerDAOImplTest {
     bean.setLastName("Doe");
     bean.setSsn("123-456-7890");
     sf =
-        new AnnotationConfiguration().configure("hibernate.cfg.xml")
+        new AnnotationConfiguration().configure("hibernate-test.cfg.xml")
             .buildSessionFactory();
     dao.setSessionFactory(sf);
     s = sf.getCurrentSession();
@@ -52,12 +54,12 @@ public class OwnerDAOImplTest {
 
   @After
   public void tearDown() throws Exception {
-    s.getTransaction().commit();
+    s.getTransaction().rollback();
   }
 
   @Test
   public void testSave() {
-    dao.save(bean);
+    assertTrue(dao.save(bean));
   }
 
   @Test
@@ -65,6 +67,16 @@ public class OwnerDAOImplTest {
     dao.save(bean);
     assertEquals(1, dao.findAll().size());
     assertEquals(bean, dao.findAll().get(0));
+  }
+
+  @Test(expected = ConstraintViolationException.class)
+  public void duplicateSsnCanNotBeSaved() {
+    dao.save(bean);
+    bean = new OwnerBean();
+    bean.setFirstName("Jane");
+    bean.setLastName("Doe");
+    bean.setSsn("123-456-7890");
+    dao.save(bean);
   }
 
 }
