@@ -79,7 +79,7 @@ public class AccountDAOImplTest extends
   }
 
   @Test(expected = ConstraintViolationException.class)
-  public void raiseExceptionWhenDuplicateAccountNumberIsSaved() {
+  public void duplicateAccountNumberCanNotBeSaved() {
     dao.save(account);
     account = new AccountBean();
     account.setAccountNumber(12345);
