@@ -45,7 +45,7 @@ public class OwnerDAOImplTest {
     bean.setLastName("Doe");
     bean.setSsn("123-456-7890");
     sf =
-        new AnnotationConfiguration().configure("hibernate.cfg.xml")
+        new AnnotationConfiguration().configure("hibernate-test.cfg.xml")
             .buildSessionFactory();
     dao.setSessionFactory(sf);
     s = sf.getCurrentSession();
