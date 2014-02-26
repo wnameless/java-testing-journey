@@ -91,4 +91,5 @@ public class AccountsControllerTest {
         .andExpect(model().attribute("owners", emptyList()))
         .andExpect(model().attribute("accounts", emptyList()));
   }
+
 }
