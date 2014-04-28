@@ -35,8 +35,10 @@ import com.google.i18n.phonenumbers.PhoneNumberUtil;
 
 public final class BankValidator {
 
-  private static EmailValidator emailValidator = EmailValidator.getInstance();
-  private static PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
+  private static final EmailValidator emailValidator = EmailValidator
+      .getInstance();
+  private static final PhoneNumberUtil phoneUtil = PhoneNumberUtil
+      .getInstance();
 
   private BankValidator() {}
 
