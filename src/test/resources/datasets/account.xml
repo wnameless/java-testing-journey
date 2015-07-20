@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
 <dataset>
 	<account id="1" account_number="12345" routing_number="67890" />
 	<account id="2" account_number="67890" routing_number="12345" />
